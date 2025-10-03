@@ -3,7 +3,18 @@ on:
   pull_request:
     types:
       - opened
+    branches:
+      - main
+      - 'dev-*' # matches dev-1, dev-2, dev-feature, etc.
+      - 'feat/**' # matches feat/one, feat/two/three, etc.
   workflow_dispatch:
+  push:
+    branches:
+      - main
+      - 'dev-*' # matches dev-1, dev-2, dev-feature, etc.
+      - 'feat/**' # matches feat/one, feat/two/three, etc.
+    paths-ignore:
+      - '.github/workflows/**' # ignore changes to workflow files
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -15,7 +26,7 @@ jobs:
       - name: Install dependecies
         run: npm ci
       - name: Test code
-        run: npm run Test
+        run: npm run test
       - name: Build code
         run: npm run build
       - name: Deploy project
